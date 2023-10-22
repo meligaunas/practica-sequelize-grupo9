@@ -14,14 +14,38 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.Category,{
         as : 'category',
         foreignKey : 'categoryId'
+      });
+    
+      Product.belongsToMany(models.User, {
+        as : 'users',
+         through : 'cart',
+         foreignKey : 'userId',
+         otherKey : 'productId'
+      });
+
+      Product.hasMany(models.Image, {
+        as : 'images',
+        foreignKey : 'productId'
       })
     }
   }
   Product.init({
-    name: DataTypes.STRING,    
-    price: DataTypes.INTEGER,
-    description: DataTypes.TEXT,
-    discount: DataTypes.INTEGER,
+    name: {
+      type : DataTypes.STRING, 
+      allowNull : false   
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      allowNull : false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull : false
+    },
+    discount: {
+      type: DataTypes.INTEGER,
+      defaultValue : 0
+    },
     brand: DataTypes.STRING,
     categoryId: DataTypes.INTEGER
   }, {
